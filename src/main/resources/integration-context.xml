@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:int="http://www.springframework.org/schema/integration"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+  https://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/integration
+  https://www.springframework.org/schema/integration/spring-integration.xsd">
+
+    <!-- Endpoint -->
+    <int:gateway id="queueOutboundGateway"
+                 service-interface="com.azure.spring.sample.servicebus.QueueOutboundGateway"
+                 default-request-channel="outputChannel">
+        <int:method name = "send"/>
+    </int:gateway>
+
+    <!-- Channel -->
+    <int:channel id="outputChannel"/>
+
+    <!-- Endpoint -->
+    <int:service-activator input-channel="outputChannel" method="queueMessageSender">
+        <beans:bean class="com.azure.spring.sample.servicebus.SendService" />
+    </int:service-activator>
+
+
+    <!-- Channel -->
+    <int:channel id="inputChannel"/>
+
+    <!-- Endpoint -->
+    <int:service-activator ref="receiveService" input-channel="inputChannel" method="messageReceiver"/>
+
+    <!-- Spring Bean -->
+    <beans:bean id="receiveService" class="com.azure.spring.sample.servicebus.QueueReceiveController"/>
+
+</beans:beans>

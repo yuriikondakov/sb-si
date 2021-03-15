@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    azure:
+      servicebus:
+        connection-string: "Endpoint=sb://testsb-sbnamespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=jL1rOMBvRcRJPtIW537j+VEEy1ty5ZFg4d6JbNBN6SQ="
+
+logging:
+  level:
+    root: DEBUG
